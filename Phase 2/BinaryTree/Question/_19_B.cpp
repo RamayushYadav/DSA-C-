@@ -1,0 +1,101 @@
+// Construct Tree From Inorder And PreOrder
+/*
+  N = 6
+  inorder[] = {3,1,4,0,5,2}
+  preorder[] = {0,1,3,4,2,5}
+
+  output --> 3 4 1 5 2 0
+        0
+      /   \
+    1      2
+   / \    /
+  3  4   5
+  */
+#include <iostream>
+#include<map>
+using namespace std;
+
+class Node
+{
+public:
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int data)
+    {
+        this->data = data;
+        this->left = NULL;
+        this->right = NULL;
+    }
+};
+
+
+
+void createMapping(int in[],map<int,int> &nodeToIndex,int n)
+{
+    for(int i = 0; i < n; i++)
+    {
+        nodeToIndex[in[i]] = i;
+    }
+}
+
+
+Node *solve(int in[], int pre[], int &index, int inorderStart, int inorderEnd, int n,map<int,int> &nodeToIndex)
+{
+    // base case(pre ka array size ke bahar chale jaye and start and end se aage chala jaye)
+    if (index >= n || inorderStart > inorderEnd)
+    {
+        return NULL;
+    }
+
+    // inorder main position find karna
+    //create a root for element
+
+    int element = pre[index++];
+    Node *root = new Node(element);
+    // find element's index in inorder
+    int position = nodeToIndex[element];
+
+    // recursive calls
+    root->left = solve(in, pre, index, inorderStart, position - 1, n,nodeToIndex);
+    root->right = solve(in, pre, index, position + 1, inorderEnd, n,nodeToIndex);
+
+    return root;
+}
+
+Node *BuildTree(int in[], int pre[], int n)
+{
+    int preorderIndex = 0;
+    // create  mapping
+    map<int,int> nodeToIndex;
+    createMapping(in,nodeToIndex,n);
+    
+    Node *ans = solve(in, pre, preorderIndex, 0, n - 1, n,nodeToIndex);
+    return ans;
+}
+
+void PostOrder(Node *root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+
+    PostOrder(root->left);
+    PostOrder(root->right);
+    cout << root->data << " ";
+}
+
+int main()
+
+{
+    int in[] = {3, 1, 4, 0, 5, 2};
+    int pre[] = {0, 1, 3, 4, 2, 5};
+    int n = 6;
+    Node *root = BuildTree(in, pre, n);
+
+    PostOrder(root);
+
+    return 0;
+}

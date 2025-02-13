@@ -1,0 +1,34 @@
+*
+{
+    margin: 0;
+    padding: 0;
+}
+.heading
+{
+    display: flex;
+    justify-content: center;
+    background-color: yellow;
+    height: 107px;
+    width: 100%;
+    
+}
+
+.log
+{
+    display: flex;
+}
+
+.log p
+{
+    width:17%;
+    height: 500px;
+    background-color: rgb(235, 135, 168);
+}
+.log h3
+{
+    width: 83%;
+    height: 500px;
+    background-color:blue;
+    display: flex;
+    justify-content: center;
+}
